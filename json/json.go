@@ -2,8 +2,7 @@ package json
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
@@ -58,15 +57,14 @@ func RawMessageToObject(data []byte, v interface{}) interface{} {
 func ReadJson(file string, v interface{}) error {
 	jsonFile, err := os.Open(file)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 	// defer the closing of our jsonFile so that we can parse it later on
 	defer jsonFile.Close()
 
-	byteValue, _ := ioutil.ReadAll(jsonFile)
+	byteValue, _ := io.ReadAll(jsonFile)
 	err = json.Unmarshal(byteValue, &v)
 	if err != nil {
-		fmt.Printf("在反序列化数据时出现异常" + err.Error())
 		return err
 	}
 	return nil
