@@ -2,7 +2,7 @@ package math
 
 import "testing"
 
-func Test_RoundX(t *testing.T) {
+func Test_Round(t *testing.T) {
 	v := 3.14159265
 	result := Round(v, 3)
 	if result != 3.142 {
