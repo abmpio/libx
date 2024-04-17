@@ -92,6 +92,22 @@ func ToSliceWithValue[k comparable, sv any, dv any](source map[k]sv, vFunc func(
 	return value
 }
 
+// extract map value to []v from map[k]v
+// support convert map value to other type
+func ToSliceWithValueWithFilter[k comparable, sv any, dv any](source map[k]sv, vFunc func(key k, item sv) dv, filter func(key k, item sv) bool) []dv {
+	value := make([]dv, 0)
+	if len(source) <= 0 {
+		return value
+	}
+	for eachKey, eachItem := range source {
+		if filter != nil && !filter(eachKey, eachItem) {
+			continue
+		}
+		value = append(value, vFunc(eachKey, eachItem))
+	}
+	return value
+}
+
 // extract map value to []v from map[k]v,
 // filter func that handler filter, false dont add to slice
 func ToSliceWithFilter[k comparable, v any](source map[k]v, filter func(item lang.KeyValuePair[k, v]) bool) []v {
