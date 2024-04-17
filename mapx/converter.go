@@ -3,6 +3,8 @@ package mapx
 import (
 	"encoding/json"
 	"sort"
+
+	"github.com/abmpio/libx/lang"
 )
 
 // 使用json的方式将一个对象转换为另一个对象
@@ -72,6 +74,22 @@ func ToSlice[k comparable, v any](source map[k]v) []v {
 		return value
 	}
 	for _, eachItem := range source {
+		value = append(value, eachItem)
+	}
+	return value
+}
+
+// extract map value to []v from map[k]v,
+// filter func that handler filter, false dont add to slice
+func ToSliceWithFilter[k comparable, v any](source map[k]v, filter func(item lang.KeyValuePair[k, v]) bool) []v {
+	value := make([]v, 0)
+	if len(source) <= 0 {
+		return value
+	}
+	for eachKey, eachItem := range source {
+		if filter != nil && !filter(lang.NewKeyValuePair(eachKey, eachItem)) {
+			continue
+		}
 		value = append(value, eachItem)
 	}
 	return value
