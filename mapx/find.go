@@ -2,7 +2,7 @@ package mapx
 
 import "strings"
 
-func KeyExists(k string, m map[string]interface{}, keyInsensitivise bool) string {
+func KeyExists[V any](k string, m map[string]V, keyInsensitivise bool) string {
 	lk := k
 	if keyInsensitivise {
 		lk = strings.ToLower(k)

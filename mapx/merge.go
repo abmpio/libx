@@ -54,7 +54,41 @@ func MergeMaps(src map[string]interface{}, dst map[string]interface{}, opts ...M
 	}
 }
 
-func MergeMapsT[TS comparable, VS any, TD comparable, VD any](srcMap map[TS]VS, toMap map[TD]VD, itemFunc func(srcKey TS, srcValue VS) (TD, VD)) {
+// merge map
+func MergeStringMapsT[V any](src map[string]V, dst map[string]V, opts ...MergeConfig) {
+	currentOpt := defaultMergeConfig()
+	if len(opts) > 0 {
+		currentOpt = &opts[0]
+	}
+	for sk, sv := range src {
+		if len(currentOpt.ExcludeKey) > 0 {
+			ignore := false
+			if currentOpt.KeyInsensitivise {
+				ignore = stringslice.ContainsIgnoreLowercase(currentOpt.ExcludeKey, sk)
+			} else {
+				ignore = stringslice.Contains(currentOpt.ExcludeKey, sk)
+			}
+			if ignore {
+				continue
+			}
+		}
+		tk := KeyExists(sk, dst, currentOpt.KeyInsensitivise)
+		if tk == "" {
+			// not exist
+			if currentOpt.OnlyReplaceExist {
+				continue
+			}
+			dst[sk] = sv
+			continue
+		}
+		if currentOpt.OnlyAdd {
+			continue
+		}
+		dst[tk] = sv
+	}
+}
+
+func MergeMapsTWith[TS comparable, VS any, TD comparable, VD any](srcMap map[TS]VS, toMap map[TD]VD, itemFunc func(srcKey TS, srcValue VS) (TD, VD)) {
 	for sk, sv := range srcMap {
 		toKey, toValue := itemFunc(sk, sv)
 		toMap[toKey] = toValue
