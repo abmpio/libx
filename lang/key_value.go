@@ -3,8 +3,8 @@ package lang
 import "fmt"
 
 type KeyValuePair[K, V any] struct {
-	Key   K
-	Value V
+	Key   K `json:"key"`
+	Value V `json:"value"`
 }
 
 func NewKeyValuePair[K, V any](key K, v V) KeyValuePair[K, V] {
