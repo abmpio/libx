@@ -53,3 +53,33 @@ func DurationHumanText(duration time.Duration) string {
 		minutes,
 		seconds)
 }
+
+func IsUTC(t *time.Time) bool {
+	return t.Location().String() == time.UTC.String()
+}
+
+// 获取时间的utc时区unix时间戳，以秒为单位
+func UnixTime(t *time.Time) int64 {
+	var sec int64
+	if IsUTC(t) {
+		sec = t.Unix()
+	} else {
+		sec = t.UTC().Unix()
+	}
+	return sec
+}
+
+// 获取时间的utc时区unix时间戳，以分钟为单位
+func UnixMinute(t *time.Time) int64 {
+	return UnixTime(t) / 60
+}
+
+// 获取时间的utc时区unix时间戳，以小时为单位
+func UnixHour(t *time.Time) int64 {
+	return UnixTime(t) / 3600
+}
+
+// 获取时间的utc时区unix时间戳，以天为单位
+func UnixDay(t *time.Time) int64 {
+	return UnixTime(t) / 86400
+}
