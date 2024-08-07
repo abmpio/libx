@@ -83,3 +83,9 @@ func UnixHour(t *time.Time) int64 {
 func UnixDay(t *time.Time) int64 {
 	return UnixTime(t) / 86400
 }
+
+// 获取昨天(UTC时间)
+func YesterdayUTC() time.Time {
+	now := time.Now().UTC()
+	return now.AddDate(0, 0, -1)
+}
