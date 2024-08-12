@@ -2,22 +2,22 @@ package mapx
 
 import "time"
 
-func GetAsInt64Ptr(m map[string]interface{}, key string) *int64 {
+func GetValueAsInt64Ptr(m map[string]interface{}, key string) *int64 {
 	v, _ := GetValueAs[*int64](m, key)
 	return v
 }
 
-func GetAsBoolPtr(m map[string]interface{}, key string) *bool {
+func GetValueAsBoolPtr(m map[string]interface{}, key string) *bool {
 	v, _ := GetValueAs[*bool](m, key)
 	return v
 }
 
-func GetAsTimePtr(m map[string]interface{}, key string) *time.Time {
+func GetValueAsTimePtr(m map[string]interface{}, key string) *time.Time {
 	v, _ := GetValueAs[*time.Time](m, key)
 	return v
 }
 
-func GetAsString(m map[string]interface{}, key string) string {
+func GetValueAsString(m map[string]interface{}, key string) string {
 	v, _ := GetValueAs[string](m, key)
 	return v
 }
