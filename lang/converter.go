@@ -16,17 +16,25 @@ func StringToPtr(v string) *string {
 	return &v
 }
 
+// 将int值转换为指针
+func IntToPtr(v int) *int {
+	return &v
+}
+
+func Int64ToPtr(v int64) *int64 {
+	return &v
+}
+
+func Float64ToPtr(v float64) *float64 {
+	return &v
+}
+
 // 将bool指针转换为bool,如果指针为nil，则直接返回false
 func PtrToBool(v *bool) bool {
 	if v == nil {
 		return false
 	}
 	return *v
-}
-
-// 将int值转换为指针
-func IntToPtr(v int) *int {
-	return &v
 }
 
 // 将int指针转换为int,如果指针为nil，则直接返回0
