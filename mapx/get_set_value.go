@@ -7,8 +7,18 @@ func GetValueAsInt64Ptr(m map[string]interface{}, key string) *int64 {
 	return v
 }
 
+func GetValueAsInt64(m map[string]interface{}, key string) int64 {
+	v, _ := GetValueAs[int64](m, key)
+	return v
+}
+
 func GetValueAsBoolPtr(m map[string]interface{}, key string) *bool {
 	v, _ := GetValueAs[*bool](m, key)
+	return v
+}
+
+func GetValueAsBool(m map[string]interface{}, key string) bool {
+	v, _ := GetValueAs[bool](m, key)
 	return v
 }
 
