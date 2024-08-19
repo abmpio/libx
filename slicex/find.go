@@ -29,3 +29,14 @@ func FindIndex[V any](s []V, equalsFunc func(item V) bool) int {
 	}
 	return -1
 }
+
+// 查找在slice中的第一个符合条件的对象
+func FindOne[V any](s []V, equalsFunc func(item V) bool) V {
+	for _, e := range s {
+		if equalsFunc(e) {
+			return e
+		}
+	}
+	var value V
+	return value
+}
