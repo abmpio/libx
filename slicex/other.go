@@ -40,3 +40,21 @@ func PartitionSlice[SV any](input []SV, partitionCount int) [][]SV {
 
 	return partitionSlice
 }
+
+// 将一个新项目插入到slice的指定索引处，并返回新的索引
+// 如果index小于或等于0,则插入到最前面
+// 如果index大于或等于slice的长度,则插入到最后面
+func InsertItemAtIndex[SV any](slice []SV, index int, value SV) []SV {
+	// 确保索引有效
+	if index <= 0 {
+		newArray := make([]SV, 0)
+		newArray = append(newArray, value)
+		newArray = append(newArray, slice...)
+		return newArray
+	}
+	if index >= len(slice) {
+		return append(slice, value)
+	}
+	// 插入元素
+	return append(slice[:index], append([]SV{value}, slice[index:]...)...)
+}
