@@ -2,6 +2,17 @@ package stringslice
 
 import "strings"
 
+// append if not contains
+func AppendIfNotContains(l []string, list ...string) []string {
+	for _, v := range list {
+		if Contains(l, v) {
+			continue
+		}
+		l = append(l, v)
+	}
+	return l
+}
+
 // StrContains => Contains
 // StringSliceEqual => Equal
 // StringSliceMergeSorted => MergeSorted
