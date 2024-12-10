@@ -664,3 +664,11 @@ func GetFallbackMimeType(filename string, fallback string) string {
 		return fallback
 	}
 }
+
+// 根据文件格式来获取MimeType,如.jpg
+func GetMimeTypeByFileFormat(fileFormat string) string {
+	if mimeType, ok := allMimeMap[fileFormat]; ok {
+		return mimeType
+	}
+	return ""
+}
