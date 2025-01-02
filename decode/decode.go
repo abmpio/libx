@@ -1,3 +1,7 @@
+// extract from https://github.com/hashicorp/consul/blob/main/lib/decode/decode.go
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: BUSL-1.1
+
 /*
 Package decode provides tools for customizing the decoding of configuration,
 into structures using mapstructure.
@@ -19,7 +23,8 @@ import (
 // Aliases must be lowercase, as keys are compared case-insensitive.
 //
 // Example alias tag:
-// MyField []string `alias:"old_field_name,otherfieldname"`
+//
+//	MyField []string `alias:"old_field_name,otherfieldname"`
 //
 // This hook should ONLY be used to maintain backwards compatibility with
 // deprecated keys. For new structures use mapstructure struct tags to set the
@@ -27,10 +32,10 @@ import (
 //
 // IMPORTANT: This function assumes that mapstructure is being used with the
 // default struct field tag of `mapstructure`. If mapstructure.DecoderConfig.TagName
-// is set to a different value this function will need to parameterized with
+// is set to a different value this function will need to be parameterized with
 // that value to correctly find the canonical data key.
 func HookTranslateKeys(_, to reflect.Type, data interface{}) (interface{}, error) {
-	// Return immediately if target is not a structd, as only structs can have
+	// Return immediately if target is not a struct, as only structs can have
 	// field tags. If the target is a pointer to a struct, mapstructure will call
 	// the hook again with the struct.
 	if to.Kind() != reflect.Struct {
@@ -130,9 +135,9 @@ type mapstructureFieldTags struct {
 }
 
 // HookWeakDecodeFromSlice looks for []map[string]interface{} and []interface{}
-// in the source data.If the target is not a slice or array it attempts to unpack
+// in the source data. If the target is not a slice or array it attempts to unpack
 // 1 item out of the slice. If there are more items the source data is left
-// unmodifed, allowing mapstructure to handle and report the decode error caused by
+// unmodified, allowing mapstructure to handle and report the decode error caused by
 // mismatched types. The []interface{} is handled so that all slice types are
 // behave the same way, and for the rare case when a raw structure is re-encoded
 // to JSON, which will produce the []interface{}.
