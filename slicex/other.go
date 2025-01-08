@@ -41,7 +41,7 @@ func PartitionSlice[SV any](input []SV, partitionCount int) [][]SV {
 	return partitionSlice
 }
 
-// 将一个新项目插入到slice的指定索引处，并返回新的索引
+// 将一个新项目插入到slice的指定索引处，并返回新的列表
 // 如果index小于或等于0,则插入到最前面
 // 如果index大于或等于slice的长度,则插入到最后面
 func InsertItemAtIndex[SV any](slice []SV, index int, value SV) []SV {
@@ -57,4 +57,15 @@ func InsertItemAtIndex[SV any](slice []SV, index int, value SV) []SV {
 	}
 	// 插入元素
 	return append(slice[:index], append([]SV{value}, slice[index:]...)...)
+}
+
+// 如果列表中不存在指定的项目,则将一个新项目插入到slice的指定索引处，并返回新的列表
+func InsertItemIfNotContains[SV any](list []SV, predicateFunc func(item SV) bool, index int, value SV) []SV {
+	for _, eachV := range list {
+		exist := predicateFunc(eachV)
+		if exist {
+			return list
+		}
+	}
+	return InsertItemAtIndex(list, index, value)
 }
