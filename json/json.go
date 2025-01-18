@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"os"
+	"reflect"
 )
 
 // 将一个结构体序列化成json字符串并忽略错误
@@ -68,4 +69,31 @@ func ReadJson(file string, v interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func TryJsonToAnonymousStruct(j string) (interface{}, error) {
+	var data map[string]interface{}
+	if err := json.Unmarshal([]byte(j), &data); err != nil {
+		return nil, err
+	}
+
+	// Create a slice of StructFields
+	fields := make([]reflect.StructField, 0, len(data))
+	for k, v := range data {
+		fields = append(fields, reflect.StructField{
+			Name: k,
+			Type: reflect.TypeOf(v),
+		})
+	}
+
+	// Create the struct type
+	t := reflect.StructOf(fields)
+
+	// Unmarshal again, this time to the new struct type
+	val := reflect.New(t)
+	i := val.Interface()
+	if err := json.Unmarshal([]byte(j), &i); err != nil {
+		return nil, err
+	}
+	return i, nil
 }
