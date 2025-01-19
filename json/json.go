@@ -13,6 +13,12 @@ func ObjectToJson(v any) string {
 	return string(s)
 }
 
+// 将一个结构体序列化成格式化的json字符串并忽略错误
+func ObjectToJsonFormatted(v interface{}) string {
+	data, _ := json.MarshalIndent(v, "", "  ")
+	return string(data)
+}
+
 // 使用json的方式将一个对象转换为另一个对象
 func ConvertObjectTo(src interface{}, dest interface{}) error {
 	data, err := json.Marshal(src)
