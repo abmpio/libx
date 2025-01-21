@@ -16,3 +16,8 @@ func NewNameWithT[T any](name string, v T) *NameValueWith[T] {
 		Value: v,
 	}
 }
+
+// NameValue, T is string
+type NameWithString struct {
+	NameValueWith[string] `bson:",inline"`
+}
