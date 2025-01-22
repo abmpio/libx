@@ -60,6 +60,21 @@ func ReadFile(filePath string) ([]byte, error) {
 	return byteValue, err
 }
 
+// 将内容二进制内容存入到文件中，自动换行
+func WriteRawDataToFile(filePath string, data []byte) error {
+	f, err := os.OpenFile(filePath,
+		os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	if _, err := f.Write(data); err != nil {
+		err = fmt.Errorf("写入数据到文件%s时出错,错误信息:%s", filePath, err.Error())
+		return err
+	}
+	return nil
+}
+
 // 将内容存入到文件中，自动换行
 func WriteToFile(filePath string, data string) error {
 	f, err := os.OpenFile(filePath,
