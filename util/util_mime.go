@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/abmpio/libx/stringslice"
 )
 
 var allMimeMap = map[string]string{
@@ -671,4 +673,15 @@ func GetMimeTypeByFileFormat(fileFormat string) string {
 		return mimeType
 	}
 	return ""
+}
+
+// 获取所有图像类型的mime type list
+func GetImageMimeTypeList() []string {
+	list := make([]string, 0)
+	for _, eachValue := range allMimeMap {
+		if strings.HasPrefix("image/", eachValue) {
+			list = stringslice.AppendIfNotContains(list)
+		}
+	}
+	return list
 }
