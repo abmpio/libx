@@ -10,6 +10,11 @@ import (
 	"github.com/abmpio/libx/stringslice"
 )
 
+// mime的格式定义:<type>/<subtype>[; parameter=value]
+// <type>：主类型（如 text, application, image 等）
+// <subtype>：子类型（如 plain, html, json, jpeg 等）
+// ; parameter=value：可选的参数（如字符集、边界等）
+
 var allMimeMap = map[string]string{
 	".323":                    "text/h323",
 	".3g2":                    "video/3gpp2",
@@ -677,9 +682,14 @@ func GetMimeTypeByFileFormat(fileFormat string) string {
 
 // 获取所有图像类型的mime type list
 func GetImageMimeTypeList() []string {
+	return GetMimeTypeListHasPrefix("image/")
+}
+
+// 获取所有包含了指定的前缀的所有mime列表
+func GetMimeTypeListHasPrefix(prefix string) []string {
 	list := make([]string, 0)
 	for _, eachValue := range allMimeMap {
-		if strings.HasPrefix("image/", eachValue) {
+		if strings.HasPrefix(prefix, eachValue) {
 			list = stringslice.AppendIfNotContains(list)
 		}
 	}
