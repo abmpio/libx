@@ -15,7 +15,7 @@ import (
 func GetPrivateIPv4() ([]*net.IPAddr, error) {
 	addresses, err := activeInterfaceAddresses()
 	if err != nil {
-		return nil, fmt.Errorf("Failed to get interface addresses: %v", err)
+		return nil, fmt.Errorf("failed to get interface addresses: %v", err)
 	}
 
 	var addrs []*net.IPAddr
@@ -45,7 +45,7 @@ func GetPrivateIPv4() ([]*net.IPAddr, error) {
 func GetPublicIPv6() ([]*net.IPAddr, error) {
 	addresses, err := net.InterfaceAddrs()
 	if err != nil {
-		return nil, fmt.Errorf("Failed to get interface addresses: %v", err)
+		return nil, fmt.Errorf("failed to get interface addresses: %v", err)
 	}
 
 	var addrs []*net.IPAddr
@@ -113,7 +113,7 @@ func activeInterfaceAddresses() ([]net.Addr, error) {
 
 	interfaces, err := net.Interfaces()
 	if err != nil {
-		return nil, fmt.Errorf("Failed to get interfaces: %v", err)
+		return nil, fmt.Errorf("failed to get interfaces: %v", err)
 	}
 
 	for _, iface := range interfaces {
@@ -124,7 +124,7 @@ func activeInterfaceAddresses() ([]net.Addr, error) {
 
 		addresses, err := iface.Addrs()
 		if err != nil {
-			return nil, fmt.Errorf("Failed to get interface addresses: %v", err)
+			return nil, fmt.Errorf("failed to get interface addresses: %v", err)
 		}
 
 		if iface.Flags&net.FlagLoopback != 0 {
