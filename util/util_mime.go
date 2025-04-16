@@ -689,7 +689,7 @@ func GetImageMimeTypeList() []string {
 func GetMimeTypeListHasPrefix(prefix string) []string {
 	list := make([]string, 0)
 	for _, eachValue := range allMimeMap {
-		if strings.HasPrefix(prefix, eachValue) {
+		if strings.HasPrefix(eachValue, prefix) {
 			list = stringslice.AppendIfNotContains(list)
 		}
 	}
