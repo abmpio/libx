@@ -8,13 +8,21 @@ import (
 )
 
 // 将一个结构体序列化成json字符串并忽略错误
+// 如果v为nil，则返回""字符串
 func ObjectToJson(v any) string {
+	if v == nil {
+		return ""
+	}
 	s, _ := json.Marshal(v)
 	return string(s)
 }
 
 // 将一个结构体序列化成格式化的json字符串并忽略错误
+// 如果v为nil，则返回""字符串
 func ObjectToJsonFormatted(v interface{}) string {
+	if v == nil {
+		return ""
+	}
 	data, _ := json.MarshalIndent(v, "", "  ")
 	return string(data)
 }
