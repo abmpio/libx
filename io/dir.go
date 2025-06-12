@@ -3,6 +3,7 @@ package io
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -86,4 +87,29 @@ func GetDirOfPath(fullPath string) string {
 	}
 
 	return fullPath[:index]
+}
+
+// 判断 targetPath 是否是 basePath 的子目录
+func IsSubPath(basePath, targetPath string) (bool, error) {
+	absBase, err := filepath.Abs(basePath)
+	if err != nil {
+		return false, err
+	}
+
+	absTarget, err := filepath.Abs(targetPath)
+	if err != nil {
+		return false, err
+	}
+
+	rel, err := filepath.Rel(absBase, absTarget)
+	if err != nil {
+		return false, err
+	}
+
+	// rel 开头是 .. 表示不在 basePath 内部
+	if strings.HasPrefix(rel, "..") || rel == "." {
+		return false, nil
+	}
+
+	return true, nil
 }
