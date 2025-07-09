@@ -7,11 +7,6 @@ type KnowedStructType interface {
 		bool | time.Time
 }
 
-// 将一个范型类型的实例转换为指针类型的
-func VToPtr[T any](v T) *T {
-	return &v
-}
-
 // 将bool值转换为指针
 func BoolToPtr(v bool) *bool {
 	return &v
