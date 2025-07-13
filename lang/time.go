@@ -31,6 +31,42 @@ func ParseTimeToChinaTimezone(layoutList []string, timeString string) (*time.Tim
 	return nil, fmt.Errorf("无效的时间,时间格式必须是%s", strings.Join(layoutList, ","))
 }
 
+// parse time string to time used available layout
+// return when any layout not error
+func ParseTimeUseLayout(s string, layout []string, loc *time.Location) *time.Time {
+	cLoc := loc
+	if cLoc == nil {
+		cLoc = time.Local
+	}
+	for _, eachLayout := range layout {
+		t, err := time.ParseInLocation(eachLayout, s, cLoc)
+		if err == nil {
+			return &t
+		}
+	}
+	return nil
+}
+
+// parse a string list to time list
+func ParseStringListToTimeList(timeStringList []string) ([]*time.Time, error) {
+	timeList := make([]*time.Time, 0)
+	if len(timeStringList) <= 0 {
+		return timeList, nil
+	}
+	supportLayoutList := []string{
+		time.RFC3339,
+		DefaultTimeLayout,
+	}
+	for _, eachS := range timeStringList {
+		t := ParseTimeUseLayout(eachS, supportLayoutList, ChinaTimezone)
+		if t == nil {
+			return make([]*time.Time, 0), fmt.Errorf("invalid time format:%s", eachS)
+		}
+		timeList = append(timeList, t)
+	}
+	return timeList, nil
+}
+
 func DurationHumanText(duration time.Duration) string {
 	if duration <= 0 {
 		return "0 seconds"
