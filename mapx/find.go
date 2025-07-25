@@ -2,6 +2,7 @@ package mapx
 
 import "strings"
 
+// check key exist in map
 func KeyExists[V any](k string, m map[string]V, keyInsensitivise bool) string {
 	lk := k
 	if keyInsensitivise {
