@@ -63,14 +63,10 @@ func (s *SafeList[T]) Len() int {
 }
 
 // iterate over the list
-func (s *SafeList[T]) Range(fn func(i int, v T) bool) {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-
-	for i, v := range s.data {
-		if !fn(i, v) {
-			break
-		}
+func (s *SafeList[T]) ForEach(fn func(i int, v T)) {
+	otherList := s.Snapshot()
+	for i, v := range otherList {
+		fn(i, v)
 	}
 }
 
