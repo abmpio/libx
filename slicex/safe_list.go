@@ -37,6 +37,25 @@ func (s *SafeList[T]) Get(index int) (T, bool) {
 	return s.data[index], true
 }
 
+// find by fn
+func (s *SafeList[T]) FindIndex(fn func(T) bool) int {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	return FindIndex(s.data, fn)
+}
+
+// remove by fn
+func (s *SafeList[T]) RemoveBy(fn func(T) bool) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	index := FindIndex(s.data, fn)
+	if index > -1 {
+		s.data = append(s.data[:index], s.data[index+1:]...)
+	}
+}
+
 // remote at index
 func (s *SafeList[T]) RemoveAt(index int) bool {
 	s.mu.Lock()
