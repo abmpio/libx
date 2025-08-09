@@ -37,12 +37,20 @@ func (s *SafeList[T]) Get(index int) (T, bool) {
 	return s.data[index], true
 }
 
-// find by fn
+// find index by fn
 func (s *SafeList[T]) FindIndex(fn func(T) bool) int {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
 	return FindIndex(s.data, fn)
+}
+
+// find one by fn
+func (s *SafeList[T]) FindOne(fn func(T) bool) T {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	return FindOne(s.data, fn)
 }
 
 // remove by fn
