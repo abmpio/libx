@@ -37,6 +37,17 @@ func (s *SafeList[T]) Get(index int) (T, bool) {
 	return s.data[index], true
 }
 
+// get all and delete all
+func (s *SafeList[T]) PullAll() []T {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	cp := make([]T, len(s.data))
+	copy(cp, s.data)
+	s.data = make([]T, 0)
+	return cp
+}
+
 // find index by fn
 func (s *SafeList[T]) FindIndex(fn func(T) bool) int {
 	s.mu.RLock()
