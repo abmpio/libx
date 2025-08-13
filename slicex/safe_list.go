@@ -18,6 +18,17 @@ func (s *SafeList[T]) Add(v T) {
 	s.data = append(s.data, v)
 }
 
+// add if not exist, if exist then ignore
+func (s *SafeList[T]) AddIfNotExist(v T, fn func(T) bool) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	index := FindIndex(s.data, fn)
+	if index < 0 {
+		s.data = append(s.data, v)
+	}
+}
+
 // add list
 func (s *SafeList[T]) AddList(list []T) {
 	s.mu.Lock()
