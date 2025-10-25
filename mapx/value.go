@@ -5,6 +5,13 @@ import (
 	"strconv"
 )
 
+// clear all elements for map
+func ClearAllElements[K comparable, V any](m map[K]V) {
+	for k := range m {
+		delete(m, k)
+	}
+}
+
 // get key value as
 func GetKeyValueAs[T any](maps map[string]interface{}, key string) T {
 	var tValue T
