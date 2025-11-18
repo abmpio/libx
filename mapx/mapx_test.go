@@ -21,7 +21,7 @@ func Test_MergeStringMapsT(t *testing.T) {
 		"userName": "modifyed",
 		"id":       "test",
 	}, v, MergeConfig{
-		KeyInsensitivise: false,
+		KeyInsensitive: true,
 	})
 	t.Logf("v:%+v", v)
 	username, ok = v["username"]
