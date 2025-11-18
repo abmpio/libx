@@ -96,11 +96,11 @@ func (s Sequence) calculateUnion(sequence Sequence, period Period) Sequence {
 func (s Sequence) Set(offset int, period Period) Sequence {
 	index := s.filterOffset(offset)
 
-	if -1 == index && len(s.intervals) == 0 {
+	if index == -1 && len(s.intervals) == 0 {
 		return s.Push(period)
 	}
 
-	if -1 == index && len(s.intervals) > 0 {
+	if index == -1 && len(s.intervals) > 0 {
 		return s.Push(period)
 	}
 
@@ -145,7 +145,7 @@ func (s Sequence) Insert(offset int, period Period, periods ...Period) Sequence 
 
 	index := s.filterOffset(offset)
 
-	if -1 == index {
+	if index == -1 {
 		return s
 	}
 
@@ -159,11 +159,11 @@ func (s Sequence) Insert(offset int, period Period, periods ...Period) Sequence 
 func (s Sequence) Remove(offset int) Sequence {
 	offset = s.filterOffset(offset)
 
-	if -1 == offset {
+	if offset == -1 {
 		return s
 	}
 
-	if len(s.intervals) == 1 && 0 == offset {
+	if len(s.intervals) == 1 && offset == 0 {
 		return Sequence{}
 	}
 
@@ -284,19 +284,19 @@ func (s Sequence) IndexOf(other Period) int {
 func (s Sequence) filterOffset(offset int) int {
 	total := len(s.intervals)
 
-	if 0 == total {
+	if total == 0 {
 		return -1
 	}
 
-	if 0 > total+offset {
+	if total+offset < 0 {
 		return -1
 	}
 
-	if 0 > total-offset-1 {
+	if total-offset-1 < 0 {
 		return -1
 	}
 
-	if 0 > offset {
+	if offset < 0 {
 		return total + offset
 	}
 
@@ -333,12 +333,12 @@ func (s Sequence) sortByStartDate(period, other Period) int64 {
 
 func (s Sequence) Contains(periods ...Period) bool {
 	for _, p := range periods {
-		if -1 == s.IndexOf(p) {
+		if s.IndexOf(p) == -1 {
 			return false
 		}
 	}
 
-	return 0 != len(periods)
+	return len(periods) != 0
 }
 
 func (s Sequence) Equals(other Sequence) bool {
@@ -381,7 +381,7 @@ func (s Sequence) Some(callback func(Period, int) bool) bool {
 }
 
 func (s Sequence) OffsetExists(offset int) bool {
-	return -1 != s.filterOffset(offset)
+	return s.filterOffset(offset) != -1
 }
 
 func (s Sequence) OffsetGet(offset int) Period {
@@ -391,7 +391,7 @@ func (s Sequence) OffsetGet(offset int) Period {
 func (s Sequence) Get(offset int) Period {
 	offset = s.filterOffset(offset)
 
-	if -1 == offset {
+	if offset == -1 {
 		return Period{}
 	}
 

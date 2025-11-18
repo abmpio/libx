@@ -405,13 +405,13 @@ func (p Period) containsInterval(other Period) bool {
 	}
 
 	if p.startDate.Equal(other.startDate) {
-		return (p.boundaryType[0] == other.boundaryType[0] || "[" == p.boundaryType[0:1]) && p.containsDatePoint(
+		return (p.boundaryType[0] == other.boundaryType[0] || p.boundaryType[0:1] == "[") && p.containsDatePoint(
 			p.startDate.Add(other.GetDateInterval()), p.boundaryType,
 		)
 	}
 
 	if p.endDate.Equal(other.endDate) {
-		return (p.boundaryType[1] == other.boundaryType[1] || "]" == p.boundaryType[1:2]) && p.containsDatePoint(
+		return (p.boundaryType[1] == other.boundaryType[1] || p.boundaryType[1:2] == "]") && p.containsDatePoint(
 			p.endDate.Add(-other.GetDateInterval()), p.boundaryType,
 		)
 	}
