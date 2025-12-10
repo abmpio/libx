@@ -53,12 +53,12 @@ func isNonRetryable(err error, list []error) bool {
 }
 
 // 重试操作，直到成功或达到最大重试次数或上下文取消
-func RetryWithBackoffWithCtx(op func() error, cfg *RetryConfig) error {
-	return RetryWithBackoff(context.Background(), op, cfg)
+func RetryWithBackoff(op func() error, cfg *RetryConfig) error {
+	return RetryWithBackoffWithCtx(context.Background(), op, cfg)
 }
 
 // 重试操作，直到成功或达到最大重试次数或上下文取消
-func RetryWithBackoff(ctx context.Context, op func() error, cfg *RetryConfig) error {
+func RetryWithBackoffWithCtx(ctx context.Context, op func() error, cfg *RetryConfig) error {
 
 	bo := backoff.NewExponentialBackOff()
 	bo.InitialInterval = cfg.InitialInterval
