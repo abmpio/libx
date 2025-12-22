@@ -120,8 +120,57 @@ func UnixDay(t *time.Time) int64 {
 	return UnixTime(t) / 86400
 }
 
-// 获取昨天(UTC时间)
-func YesterdayUTC() time.Time {
+// utc0 today range
+func UTC0TodayRange() (start, end time.Time) {
 	now := time.Now().UTC()
-	return now.AddDate(0, 0, -1)
+
+	start = time.Date(
+		now.Year(), now.Month(), now.Day(),
+		0, 0, 0, 0,
+		time.UTC,
+	)
+
+	end = start.Add(24 * time.Hour).Add(-time.Nanosecond)
+	return
+}
+
+// utc yesterday range
+func UTC0YesterdayRange() (start, end time.Time) {
+	todayStart, _ := UTC0TodayRange()
+
+	start = todayStart.Add(-24 * time.Hour)
+	end = todayStart.Add(-time.Nanosecond)
+	return
+}
+
+// UTC+8 today
+func UTC8TodayRange() (start, end time.Time) {
+	now := time.Now()
+
+	start = utc8DayStartInUTC(now)
+	end = start.Add(24 * time.Hour).Add(-time.Nanosecond)
+	return
+}
+
+// UTC+8 yesterday
+func UTC8YesterdayRange() (start, end time.Time) {
+	todayStart, _ := UTC8TodayRange()
+
+	start = todayStart.Add(-24 * time.Hour)
+	end = todayStart.Add(-time.Nanosecond)
+	return
+}
+
+var utc8 = time.FixedZone("UTC+8", 8*3600)
+
+func utc8DayStartInUTC(t time.Time) time.Time {
+	local := t.In(utc8)
+
+	startLocal := time.Date(
+		local.Year(), local.Month(), local.Day(),
+		0, 0, 0, 0,
+		utc8,
+	)
+
+	return startLocal.UTC()
 }
